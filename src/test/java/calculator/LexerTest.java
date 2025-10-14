@@ -2,6 +2,7 @@ package calculator;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrowsExactly;
 
 import org.junit.jupiter.api.Test;
 
@@ -34,9 +35,16 @@ public class LexerTest {
     @Test
     void testConvert_기본_구분자_4() {
         var lexer = new Lexer(Constant.기본_구분자_배열);
-        var input = "-1,-2,-3";
+        var input = "05:06,07";
         var res = lexer.convert(input);
-        assertArrayEquals(new int[]{-1, -2, -3}, res);
+        assertArrayEquals(new int[]{5, 6, 7}, res);
+    }
+
+    @Test
+    void testConvert_기본_구분자_5() {
+        var lexer = new Lexer(Constant.기본_구분자_배열);
+        var input = "-1,-2,-3";
+        assertThrowsExactly(IllegalArgumentException.class, () -> lexer.convert(input));
     }
 
     @Test

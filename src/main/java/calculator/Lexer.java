@@ -22,7 +22,14 @@ class Lexer {
             s = s.replaceFirst("//.\\\\n", ",");
         }
         String[] parsed = s.split(regex);
-        return Arrays.stream(parsed).filter(e -> e != null && !"".equals(e)).mapToInt(Integer::parseInt).toArray();
+        var res = Arrays.stream(parsed).filter(e -> e != null && !"".equals(e)).mapToInt(Integer::parseInt).toArray();
+        validate(res);
+        return res;
+    }
+
+    private void validate(int[] numbers) {
+        for (int n : numbers)
+            if (n < 0) throw ErrorCode.INPUT_INVALID.exception();
     }
 
     String buildRegexFormat(String base, String s, int iCustom) {
