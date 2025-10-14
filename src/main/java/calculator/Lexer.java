@@ -1,5 +1,6 @@
 package calculator;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -13,14 +14,8 @@ class Lexer {
     }
 
     int[] convert(String s) {
-        // // 1. 커스텀 접두사 
-        // var stack = new Stack<Token>();
-        // for (int i = 0; i < s.length(); ++i) {
-        //     // 구분자를 만나면 스택이 빌 때까지 뽑아서 합치고 숫자로 만든다
-        //     // 커스텀 
-
-        // }
-        return null;
+        String[] parsed = s.split(",|:");
+        return Arrays.stream(parsed).mapToInt(Integer::parseInt).toArray();
     }
 
     // > 커스텀 구분자는 문자열 앞부분의 "//"와 "\n" 사이에 위치하는 문자를 커스텀 구분자로 사용한다.
