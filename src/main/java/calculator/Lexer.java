@@ -1,17 +1,18 @@
 package calculator;
 
 import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
 
 class Lexer {
-    private final Set<Character> defaultDelims;
+    // private final Set<Character> defaultDelims;
 
     // 최초에 기본 구분자로 클래스 초기화
-    Lexer(char[] delims) {
-        this.defaultDelims = new HashSet<>();
-        for (var delim : delims) defaultDelims.add(delim);
-    }
+    // 하드코딩된 정규표현식들 defaultDelims 사용해서
+    // 리팩토링하면 이것보단 깔끔해질듯
+
+    // Lexer(char[] delims) {
+    //     this.defaultDelims = new HashSet<>();
+    //     for (var delim : delims) defaultDelims.add(delim);
+    // }
 
     int[] convert(String s) {
         String regex = ",|:";
@@ -29,7 +30,7 @@ class Lexer {
 
     private void validate(int[] numbers) {
         for (int n : numbers)
-            if (n < 0) throw ErrorCode.INPUT_INVALID.exception();
+            if (n < 0) throw new IllegalArgumentException("유효하지 않은 입력 값입니다.");
     }
 
     String buildRegexFormat(String base, String s, int iCustom) {
@@ -38,6 +39,10 @@ class Lexer {
         if (c == '\\') return base + "|" + '\\' + c;
         if (c == '+') return base + "|" + '\\' + c;
         if (c == '*') return base + "|" + '\\' + c;
+        // 이런 식으로 추가되는 이유는
+        // 정규표현식 규칙을 컴파일 할 때
+        // 특수 문자들을 처리하기 위해서도 \를 사용하기 때문
+        // 이러한 현상을 차단하고 싶으면, 정규표현식에서 스택 방식으로 전환하는 것이 나음
         return base + "|" + c;
     }
 
