@@ -156,6 +156,8 @@ EOF
   create_if_absent "$p_view/Message.java" <<EOF
 package $PKG_NAME.view;
 
+import java.util.IllegalFormatException;
+
 import $PKG_NAME.util.ExceptionUtil;
 
 enum Message {
