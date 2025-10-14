@@ -1,10 +1,12 @@
 package calculator;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
 public class LexerTest {
+
     @Test
     void testConvert_기본_구분자_1() {
         var lexer = new Lexer(Constant.기본_구분자_배열);
@@ -28,4 +30,44 @@ public class LexerTest {
         var res = lexer.convert(input);
         assertArrayEquals(new int[]{5, 6, 7}, res);
     }
+
+    @Test
+    void testConvert_커스텀_구분자_1() {
+        var lexer = new Lexer(Constant.기본_구분자_배열);
+        var input = "//;\\n1;2;3";
+        var res = lexer.convert(input);
+        assertArrayEquals(new int[]{1, 2, 3}, res);
+    }
+
+    @Test
+    void testFindCustomDelims_커스텀_구분자_1() {
+        var lexer = new Lexer(Constant.기본_구분자_배열);
+        var input = "//;\\n1;2;3";
+        var res = lexer.findCustomDelims(input);
+        assertEquals(2, res);
+    }
+
+    @Test
+    void testBuildRegexFormat() {
+        var lexer = new Lexer(Constant.기본_구분자_배열);
+        var input = "//;\\n1;2;3";
+        var res = lexer.buildRegexFormat(input, 2);
+        assertEquals(",|:|;", res);
+    }
+
+    // @Test
+    // void regexUsage() {
+    //     var input = "//;\\n1;2;3";
+    //     String res = input.replaceAll("//.\\\\n", "");
+    //     assertEquals("1;2;3", res);
+    // }
+
+    @Test
+    void testConvert_커스텀_구분자_2() {
+        var lexer = new Lexer(Constant.기본_구분자_배열);
+        var input = "//;\\n1;2,3//n\\n1n2;3";
+        var res = lexer.convert(input);
+        assertArrayEquals(new int[]{1, 2, 3, 1, 2, 3}, res);
+    }
+
 }

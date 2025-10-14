@@ -14,8 +14,45 @@ class Lexer {
     }
 
     int[] convert(String s) {
-        String[] parsed = s.split(",|:");
-        return Arrays.stream(parsed).mapToInt(Integer::parseInt).toArray();
+        int iCustom = findCustomDelims(s);
+        String regex = buildRegexFormat(s, iCustom);
+        // if (iCustom == null) {
+        //     String[] parsed = s.split(",|:");
+        //     return Arrays.stream(parsed).mapToInt(Integer::parseInt).toArray();
+        // }
+
+        // i-2 i-1 i i+1 i+2 모두 삭제
+        // 1, [0, i-2)
+        // 2. [i+3, s.length()]
+        // String r = s.replaceFirst("//.\\\\n", ",");
+        String r = s.replaceAll("//.\\\\n", "");
+        String[] parsed = r.split(regex);
+        return Arrays.stream(parsed).filter(e -> e != null && !"".equals(e)).mapToInt(Integer::parseInt).toArray();
+        // return Arrays.stream(parsed).filter(e -> e != null && !"".equals(e)).mapToInt(Integer::parseInt).toArray();
+    }
+
+    String buildRegexFormat(String s, int iCustom) {
+        String base = ",|:";
+        if (iCustom < 0) return base;
+        return base + "|" + s.charAt(iCustom);
+    }
+
+    int findCustomDelims(String s) {
+        // 커스텀 구분자 접두사가 나타나기 전까지 스킵
+        // 나타난 이후 위치 기록
+        // 커스텀 접미사 후보 n이 나타나면 확인
+        // 없으면 -1
+        int i = 1;
+        boolean found = false;
+        for (; i < s.length(); ++i)
+            if (s.charAt(i) == '/' && s.charAt(i - 1) == '/') {
+                found = true;
+                break;
+            }
+        if (found && i + 3 < s.length())
+            if (s.charAt(i + 2) == '\\' && s.charAt(i + 3) == 'n')
+                return i + 1;
+        return -1;
     }
 
     // > 커스텀 구분자는 문자열 앞부분의 "//"와 "\n" 사이에 위치하는 문자를 커스텀 구분자로 사용한다.
