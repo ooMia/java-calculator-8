@@ -121,6 +121,27 @@ public class LexerTest {
     }
 
     @Test
+    void testConvert_커스텀_구분자_7() {
+        var lexer = new Lexer();
+        var input = "//*1*2*3";
+        assertThrowsExactly(IllegalArgumentException.class, () -> lexer.convert(input));
+    }
+
+    @Test
+    void testConvert_커스텀_구분자_8() {
+        var lexer = new Lexer();
+        var input = "//*1*2*3\\n";
+        assertThrowsExactly(IllegalArgumentException.class, () -> lexer.convert(input));
+    }
+
+    @Test
+    void testConvert_커스텀_구분자_9() {
+        var lexer = new Lexer();
+        var input = "//*";
+        assertThrowsExactly(IllegalArgumentException.class, () -> lexer.convert(input));
+    }
+
+    @Test
     void testConvert_복합_구분자_1() {
         var lexer = new Lexer();
         var input = "//\\\\n1:2\\3//n\\n1n2\\3";
