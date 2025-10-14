@@ -14,25 +14,18 @@ class Lexer {
     }
 
     int[] convert(String s) {
-        int iCustom = findCustomDelims(s);
-        String regex = buildRegexFormat(s, iCustom);
-        // if (iCustom == null) {
-        //     String[] parsed = s.split(",|:");
-        //     return Arrays.stream(parsed).mapToInt(Integer::parseInt).toArray();
-        // }
-
-        // i-2 i-1 i i+1 i+2 모두 삭제
-        // 1, [0, i-2)
-        // 2. [i+3, s.length()]
-        // String r = s.replaceFirst("//.\\\\n", ",");
-        String r = s.replaceAll("//.\\\\n", "");
-        String[] parsed = r.split(regex);
+        String regex = ",|:";
+        while (true) {
+            int iCustom = findCustomDelims(s);
+            if (iCustom < 0) break;
+            regex = buildRegexFormat(regex, s, iCustom);
+            s = s.replaceFirst("//.\\\\n", ",");
+        }
+        String[] parsed = s.split(regex);
         return Arrays.stream(parsed).filter(e -> e != null && !"".equals(e)).mapToInt(Integer::parseInt).toArray();
-        // return Arrays.stream(parsed).filter(e -> e != null && !"".equals(e)).mapToInt(Integer::parseInt).toArray();
     }
 
-    String buildRegexFormat(String s, int iCustom) {
-        String base = ",|:";
+    String buildRegexFormat(String base, String s, int iCustom) {
         if (iCustom < 0) return base;
         return base + "|" + s.charAt(iCustom);
     }

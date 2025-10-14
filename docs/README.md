@@ -7,7 +7,7 @@
   - [ ] `Lexer`
     - [x] 기본 구분자 처리
     - [x] 단일 커스텀 구분자 처리
-    - [ ] 복합 커스텀 구분자 처리
+    - [x] 복합 커스텀 구분자 처리
   - [x] `Token`
 - [ ] ErrorCode enum
 - [ ] view.Message

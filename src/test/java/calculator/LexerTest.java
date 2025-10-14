@@ -51,7 +51,7 @@ public class LexerTest {
     void testBuildRegexFormat() {
         var lexer = new Lexer(Constant.기본_구분자_배열);
         var input = "//;\\n1;2;3";
-        var res = lexer.buildRegexFormat(input, 2);
+        var res = lexer.buildRegexFormat(",|:", input, 2);
         assertEquals(",|:|;", res);
     }
 
