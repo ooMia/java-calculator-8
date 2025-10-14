@@ -28,7 +28,9 @@ class Lexer {
     String buildRegexFormat(String base, String s, int iCustom) {
         if (iCustom < 0) return base;
         char c = s.charAt(iCustom);
-        if (c == '\\') return base + "|" + c + c;
+        if (c == '\\') return base + "|" + '\\' + c;
+        if (c == '+') return base + "|" + '\\' + c;
+        if (c == '*') return base + "|" + '\\' + c;
         return base + "|" + c;
     }
 

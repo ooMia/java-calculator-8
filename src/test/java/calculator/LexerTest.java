@@ -32,6 +32,14 @@ public class LexerTest {
     }
 
     @Test
+    void testConvert_기본_구분자_4() {
+        var lexer = new Lexer(Constant.기본_구분자_배열);
+        var input = "-1,-2,-3";
+        var res = lexer.convert(input);
+        assertArrayEquals(new int[]{-1, -2, -3}, res);
+    }
+
+    @Test
     void testConvert_커스텀_구분자_1() {
         var lexer = new Lexer(Constant.기본_구분자_배열);
         var input = "//;\\n1;2;3";
@@ -68,6 +76,40 @@ public class LexerTest {
         var input = "//;\\n1;2,3//n\\n1n2;3";
         var res = lexer.convert(input);
         assertArrayEquals(new int[]{1, 2, 3, 1, 2, 3}, res);
+    }
+
+    @Test
+    void testConvert_커스텀_구분자_3() {
+        var lexer = new Lexer(Constant.기본_구분자_배열);
+        var input = "//-\\n1-2-3";
+        var res = lexer.convert(input);
+        assertArrayEquals(new int[]{1, 2, 3}, res);
+    }
+
+    @Test
+    void testConvert_커스텀_구분자_4() {
+        var lexer = new Lexer(Constant.기본_구분자_배열);
+        var input = "//-\\n-1,-2,-3";
+        var res = lexer.convert(input);
+        assertArrayEquals(new int[]{1, 2, 3}, res);
+    }
+
+    @Test
+    // @Disabled("OUT_OF_SCOPE: 정규표현식의 특수 역할 문자를 모두 하나씩 처리하지 말고, 정규표현식 구조에서 벗어나야 함")
+    void testConvert_커스텀_구분자_5() {
+        var lexer = new Lexer(Constant.기본_구분자_배열);
+        var input = "//+\\n1+2+3";
+        var res = lexer.convert(input);
+        assertArrayEquals(new int[]{1, 2, 3}, res);
+    }
+
+    @Test
+    // @Disabled("OUT_OF_SCOPE: 정규표현식의 특수 역할 문자를 모두 하나씩 처리하지 말고, 정규표현식 구조에서 벗어나야 함")
+    void testConvert_커스텀_구분자_6() {
+        var lexer = new Lexer(Constant.기본_구분자_배열);
+        var input = "//*\\n1*2*3";
+        var res = lexer.convert(input);
+        assertArrayEquals(new int[]{1, 2, 3}, res);
     }
 
     @Test
