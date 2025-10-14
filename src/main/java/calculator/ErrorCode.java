@@ -1,7 +1,5 @@
 package calculator;
 
-import java.util.IllegalFormatException;
-
 import calculator.util.ExceptionUtil;
 
 public enum ErrorCode {

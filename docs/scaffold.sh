@@ -73,12 +73,8 @@ public final class Constant {
 }
 EOF
 
-  # Coin.java는 생성하지 않음 (요구사항)
-
   create_if_absent "$p_root/ErrorCode.java" <<EOF
 package $PKG_NAME;
-
-import java.util.IllegalFormatException;
 
 import $PKG_NAME.util.ExceptionUtil;
 
