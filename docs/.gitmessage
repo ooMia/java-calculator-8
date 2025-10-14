@@ -1,0 +1,11 @@
+feat(scope): feature
+fix(scope): bug fix
+docs(scope): documentation
+style(scope): formatting
+refactor(scope):
+test(scope): when adding missing tests
+chore(scope): maintain
+
+<body>
+
+<footer>
