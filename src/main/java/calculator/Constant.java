@@ -19,7 +19,7 @@ public final class Constant {
     // 구분자
     // 쉼표 ,
     // 콜론 :
-    public static final String[] 기본_구분자_배열 = new String[]{",", ":"};
+    public static final char[] 기본_구분자_배열 = new char[]{',', ':'};
 
     // 구분자를 기준으로 분리한 각 숫자의 합을 반환
     // "" => 0, "1,2" => 3, "1,2,3" => 6, "1,2:3" => 6
