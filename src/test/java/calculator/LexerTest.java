@@ -48,7 +48,7 @@ public class LexerTest {
     }
 
     @Test
-    void testBuildRegexFormat() {
+    void testBuildRegexFormat_커스텀_구분자_1() {
         var lexer = new Lexer(Constant.기본_구분자_배열);
         var input = "//;\\n1;2;3";
         var res = lexer.buildRegexFormat(",|:", input, 2);
@@ -56,7 +56,7 @@ public class LexerTest {
     }
 
     // @Test
-    // void regexUsage() {
+    // void regexUsage_커스텀_구분자_1() {
     //     var input = "//;\\n1;2;3";
     //     String res = input.replaceAll("//.\\\\n", "");
     //     assertEquals("1;2;3", res);
@@ -66,6 +66,46 @@ public class LexerTest {
     void testConvert_커스텀_구분자_2() {
         var lexer = new Lexer(Constant.기본_구분자_배열);
         var input = "//;\\n1;2,3//n\\n1n2;3";
+        var res = lexer.convert(input);
+        assertArrayEquals(new int[]{1, 2, 3, 1, 2, 3}, res);
+    }
+
+    @Test
+    void testConvert_복합_구분자_1() {
+        var lexer = new Lexer(Constant.기본_구분자_배열);
+        var input = "//\\\\n1:2\\3//n\\n1n2\\3";
+        var res = lexer.convert(input);
+        assertArrayEquals(new int[]{1, 2, 3, 1, 2, 3}, res);
+    }
+
+    @Test
+    void testFindCustomDelims_복합_구분자_1() {
+        var lexer = new Lexer(Constant.기본_구분자_배열);
+        var input = "//\\\\n1;2;3";
+        var res = lexer.findCustomDelims(input);
+        assertEquals(2, res);
+        assertEquals('\\', input.charAt(res));
+    }
+
+    @Test
+    void testBuildRegexFormat_복합_구분자_1() {
+        var lexer = new Lexer(Constant.기본_구분자_배열);
+        var input = "//\\\\n1:2\\3//n\\n1n2\\3";
+        var res = lexer.buildRegexFormat(",|:", input, 2);
+        assertEquals(",|:|\\\\", res);
+    }
+
+    // @Test
+    // void regexUsage_복합_구분자_1() {
+    //     var input = "1\\2\\3";
+    //     var res = input.split(",|:|\\\\");
+    //     assertArrayEquals(new String[]{"1", "2", "3"}, res);
+    // }
+
+    @Test
+    void testConvert_복합_구분자_2() {
+        var lexer = new Lexer(Constant.기본_구분자_배열);
+        var input = "1,2///\\n3//\\\\n1\\2/3";
         var res = lexer.convert(input);
         assertArrayEquals(new int[]{1, 2, 3, 1, 2, 3}, res);
     }

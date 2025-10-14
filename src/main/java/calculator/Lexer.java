@@ -27,7 +27,9 @@ class Lexer {
 
     String buildRegexFormat(String base, String s, int iCustom) {
         if (iCustom < 0) return base;
-        return base + "|" + s.charAt(iCustom);
+        char c = s.charAt(iCustom);
+        if (c == '\\') return base + "|" + c + c;
+        return base + "|" + c;
     }
 
     int findCustomDelims(String s) {
