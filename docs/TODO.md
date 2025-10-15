@@ -56,6 +56,9 @@
 - 자바 코드 컨벤션을 지키면서 프로그래밍한다.
 - 기본적으로 Java Style Guide를 원칙으로 한다.
 
+## 학습자 요구사항
+- 2일차: 반드시 `Token` 인터페이스를 활용하여 구현하시오.
+
 ## 라이브러리
 
 - `camp.nextstep.edu.missionutils`에서 제공하는 Console API를 사용하여 구현해야 한다.
