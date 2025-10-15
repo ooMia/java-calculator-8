@@ -27,10 +27,16 @@ public class Application {
 
 
     // 전제에 따르면 각 토큰은 양수이어야 함
-    // 실수는 우선 배제한 상태로 진행
+    // 양의 실수(ex 3.3)는 배제한 상태로 진행
     private static List<NumberToken> getUnsignedIntegerTokens(String line, String splitRule) {
         List<String> stringTokens = List.of(line.split(splitRule));
-        var integerTokens = stringTokens.stream().map(s -> new NumberToken(UnsignedInteger.parseInt(s))).toList();
+        var integerTokens = stringTokens.stream().map((s) -> {
+            var num = Integer.parseInt(s);
+            if (num <= 0) {
+                throw new IllegalArgumentException();
+            }
+            return new NumberToken(new UnsignedInteger(num));
+        }).toList();
         return integerTokens;
     }
 }
