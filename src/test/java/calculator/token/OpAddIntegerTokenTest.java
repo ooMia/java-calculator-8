@@ -13,37 +13,23 @@ public class OpAddIntegerTokenTest {
         adder = new OpAddIntegerToken();
     }
 
-    // 1. adder integerToken == integerToken
-    // 2. adder adder == integerToken
-    // 3. adder adder == adder
-
     @Test
-    void test_adderReduceIntegerToken_equalsIntegerToken() {
-        var seven = 7;
-        var sevenToken1 = new NumberToken<Integer>(seven);
-        var sevenToken2 = new NumberToken<Integer>(seven);
+    void test_adderReduceNumberToken() {
+        var sevenToken = new NumberToken(7);
 
-        // 7 = 0+ 7
-        assertEquals(sevenToken2, adder.reduce(sevenToken1));
+        var afterAdd = adder.reduce(sevenToken); // 7 = 0+ 7
+
+        assertEquals(sevenToken, afterAdd);
     }
 
     @Test
-    void test_adderReduceAdder_equalsIntegerToken() {
-        var seven = 7;
-        var sevenToken1 = new OpAddIntegerToken(seven);
-        var sevenToken2 = new NumberToken<Integer>(seven);
+    void test_adderReduceNumberToken_2() {
+        var one = new NumberToken(1);
+        var two = new NumberToken(2);
+        var three = new NumberToken(3);
 
-        // 7 = 0+ 7
-        assertEquals(sevenToken2, adder.reduce(sevenToken1));
-    }
+        var afterAdd = adder.reduce(one).reduce(two).reduce(three);
 
-    @Test
-    void test_adderReduceAdder_equalsAdder() {
-        var seven = 7;
-        var sevenToken1 = new OpAddIntegerToken(seven);
-        var sevenToken2 = new OpAddIntegerToken(seven);
-
-        // 7 = 0+ 7
-        assertEquals(sevenToken2, adder.reduce(sevenToken1));
+        assertEquals(new NumberToken(6), afterAdd);
     }
 }
