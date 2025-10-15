@@ -15,3 +15,29 @@
    - Linter 활용
    - AI를 활용한 코드 리뷰 등
 5. 2회차부터는 이전 회차에서의 부족한 점을 개선하기 위한 시도를 한다.
+
+## 풀이 기록
+
+### [Trial/first #1](https://github.com/ooMia/java-calculator-8/pull/1)
+
+#### 동일한 유형의 테스트들을 깔끔하게 관리하는 방법
+
+> 조사는 했지만, 리팩토링 전에는 나열하듯 작성하고 순서만 신경써도 충분하다.
+
+- `@BeforeEach`로 given 코드 중복 제거
+
+  ```java
+  private Lexer lexer;
+
+  @BeforeEach
+  void setUp() {
+     lexer = new Lexer();
+  }
+  ```
+
+- `@Nested` 클래스로 논리적 그룹화
+- `@ParameterizedTest`, `@xxxSource`로 중복 제거
+  ```java
+  @ParameterizedTest
+  @ValueSource(strings = {"a", "bb", "ccc"})
+  ```

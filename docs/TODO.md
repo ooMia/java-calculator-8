@@ -65,40 +65,15 @@
 
 # 코딩 가이드
 
-- 이번 시도에는 최대한 각 클래스의 독립성을 살려서 구현해보자.
-  - model.in에 static of(String) -> 파싱 구현
-  - model.out에 static from -> 매핑 구현
-  - WhatEverService 사용하기 (전역 참조 가능한 API)
-
 ## 기본 원칙
 
-- service는 일반적으로 다음과 같은 흐름을 기대한다.
-  - model.in::of -> (WhatEverService) -> model.out::from
-- `Application::main`에 클래스 내부 static 메서드로 흐름을 정의한다.
-- 개발 속도가 중요하다. 코드 내 한글 사용이 가능하다.
-- 주석을 통해 참조(파일명, 줄 번호)를 명확히 한다.
-- 요구사항에 명시된 상수/기준/조건 등은 `Constant`에 전역 변수로 정의
-- 도메인 관련 예외는 `ErrorCode` enum으로 정의
-- view.Message를 활용하여 출력 메시지를 관리한다.
-- model.in, model.out에는 `record`를 활용하고, 데이터 형변환에 집중한다.
+- 개발 속도 중요하다. 그러나 객체지향적 문제 해결력도 중요하다.
+- 올바른 순서대로 흐름을 진행하는 것을 반복하여 속도를 높이는 방향으로 훈련한다.
+- 주석을 적극적으로 활용한다. 불필요한 주석은 마무리 단계에서 삭제하면 된다.
 
 ## 체크리스트
 
-- [ ] 반드시 활용해야 하는 코드가 있는지 확인
-- [ ] 명사 <> 동사 관계를 찾아 객체지향적으로 구조 설계하기
-- [ ] Constant 초안 작성 (README 줄 번호 주석)
-- [ ] model.in / out
-- [ ] ErrorCode enum
-- [ ] model.in 제약 반영
-- [ ] view.Message
-- [ ] 설계 내용에 따라 도메인 로직 구현
-- [ ] 단위 테스트로 로직 검증
-- [ ] model.in 변환 테스트
-- [ ] model.out 변환 테스트
-- [ ] InputView 구현
-- [ ] OutputView 구현
-
-## 우테코 PR 체크리스트
+### 우테코 PR 체크리스트
 
 - 자바 코드 컨벤션을 지키면서 프로그래밍했는가?
 - 한 메서드에 오직 한 단계의 들여쓰기(indent)만 허용했는가?
@@ -119,32 +94,34 @@
 - 메소드가 한가지 일만 담당하도록 구현했는가?
 - 클래스를 작게 유지하기 위해 노력했는가?
 
+### 좋은 객체 격언
+
+- 클래스는 계약이고, 객체는 생명체이다.
+- 클래스 작성 요령
+  1. 추상화한다.
+  2. 계약을 생각한다.
+  3. 인터페이스를 구현한다.
+  4. 모든 public 메서드는 오버라이딩 되어야 한다.
+- 각 객체마다 적절한 내부 상태를 갖는 것에 대한 중요성
+  - 비슷하지만 구분되어야 한다. 마치 인간처럼.
+- 좋은 객체는 서로 유사하지만, 그 사이 변하지 않는 자신만의 고유함이 있다.
+  - 좋은 객체는 고유하기 위해 반드시 무언가를 캡슐화해야 한다.
+- 어떤 동작이 필요할 때마다 클래스를 정의하는 식으로는 절차 지향에서 벗어날 수 없다.
+  - OOP의 가치 중 하나는 범위 분해를 통해 커다랗고 추상적인 책임을 작은 단위로 분리하여 다룰 수 있다는 것이다.
+- 클래스의 이름은 그것이 무엇인지를 말해야 한다.
+  - 클래스의 이름이 “-er”로 끝난다면, 그것은 다양한 객체를 생성하는 것이 의미가 없을 가능성이 높다.
+- 좋은 객체는 완전하거나 또는 불완전한 클래스에서 온다.
+  - 슈뢰딩거의 클래스가 생성하는 객체는 신뢰할 수 없다.
+
 ---
 
 # 프로젝트 초기화
-
-## 프로젝트 구조
-
-- (root)
-  - `Application`
-  - `Constant`
-  - `ErrorCode` (enum)
-  - `WhatEverService` (public; static)
-- model (public)
-  - in (record; static of)
-  - out (record; static from)
-- view
-  - `Message` (package-private enum)
-  - `InputView`
-  - `OutputView`
-- util
-  - `ExceptionUtil`
 
 ## .vscode/settings.json
 
 ```json
 {
-  "java.format.settings.url": "https://gist.githubusercontent.com/ooMia/1a47bdf9ef00c3466d1f506aa99f4acb/raw/c7f0c56b4bd0a95dfa24de31655dac9cb9c65dc7/woowa-style.xml",
+  "java.format.settings.url": "https://gist.githubusercontent.com/ooMia/1a47bdf9ef00c3466d1f506aa99f4acb/raw/4ea31711e74e617607d9c27a47a78c60b6229a19/woowa-style.xml",
   "java.configuration.updateBuildConfiguration": "interactive",
   "[java]": {
     "editor.detectIndentation": false,
