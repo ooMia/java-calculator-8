@@ -4,13 +4,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class OpAddTokenTest {
+public class OpAddIntegerTokenTest {
 
-    private OpAddToken adder;
+    private OpAddIntegerToken adder;
 
     @BeforeEach
     void setUp() {
-        adder = new OpAddToken();
+        adder = new OpAddIntegerToken();
     }
 
     // 1. adder integerToken == integerToken
@@ -20,8 +20,8 @@ public class OpAddTokenTest {
     @Test
     void test_adderReduceIntegerToken_equalsIntegerToken() {
         var seven = 7;
-        var sevenToken1 = new IntegerToken(seven);
-        var sevenToken2 = new IntegerToken(seven);
+        var sevenToken1 = new NumberToken<Integer>(seven);
+        var sevenToken2 = new NumberToken<Integer>(seven);
 
         // 7 = 0+ 7
         assertEquals(sevenToken2, adder.reduce(sevenToken1));
@@ -30,8 +30,8 @@ public class OpAddTokenTest {
     @Test
     void test_adderReduceAdder_equalsIntegerToken() {
         var seven = 7;
-        var sevenToken1 = new OpAddToken(seven);
-        var sevenToken2 = new IntegerToken(seven);
+        var sevenToken1 = new OpAddIntegerToken(seven);
+        var sevenToken2 = new NumberToken<Integer>(seven);
 
         // 7 = 0+ 7
         assertEquals(sevenToken2, adder.reduce(sevenToken1));
@@ -40,8 +40,8 @@ public class OpAddTokenTest {
     @Test
     void test_adderReduceAdder_equalsAdder() {
         var seven = 7;
-        var sevenToken1 = new OpAddToken(seven);
-        var sevenToken2 = new OpAddToken(seven);
+        var sevenToken1 = new OpAddIntegerToken(seven);
+        var sevenToken2 = new OpAddIntegerToken(seven);
 
         // 7 = 0+ 7
         assertEquals(sevenToken2, adder.reduce(sevenToken1));
