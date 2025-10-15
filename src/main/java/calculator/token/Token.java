@@ -1,4 +1,4 @@
-package calculator;
+package calculator.token;
 
 public abstract class Token<T extends Number> {
 

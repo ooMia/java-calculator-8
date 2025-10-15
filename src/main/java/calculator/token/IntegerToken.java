@@ -1,4 +1,4 @@
-package calculator;
+package calculator.token;
 
 public final class IntegerToken extends Token<Integer> {
     private int n;

@@ -1,12 +1,17 @@
-package calculator;
+package calculator.token;
 
 public class OpAddToken extends Token<Integer> {
 
     private final int v;
 
+    public OpAddToken() {
+        this.v = 0;
+    }
+
     public OpAddToken(int v) {
         this.v = v;
     }
+
 
     @Override
     Integer value() {
