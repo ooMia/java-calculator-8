@@ -26,4 +26,13 @@ public class DelimeterTest {
         var input = "1\\2*3";
         assertArrayEquals(new String[] {"1", "2", "3",}, input.split(rule));
     }
+
+    @Test
+    void testExtractCustomDelim() {
+        String input = "//\\\\n";
+        Delimeter customDelim = Delimeter.extractCustomDelim(input);
+        assertEquals(new Delimeter('\\'), customDelim);
+        // assertEquals("\\", customDelim);
+        // assertEquals('\\', customDelim);
+    }
 }
