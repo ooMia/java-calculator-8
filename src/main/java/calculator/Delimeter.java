@@ -9,6 +9,9 @@ public final class Delimeter {
     }
 
     public Delimeter(char c) {
+        if (Character.isIdentifierIgnorable(c)) {
+            throw new IllegalArgumentException();
+        }
         this.c = c;
     }
 
@@ -48,10 +51,10 @@ public final class Delimeter {
         }
         // TODO char 와 String 에 대해서도 equals 성공하기
         // if (obj instanceof String s) {
-        //     return this.toString().equals(s);
+        // return this.toString().equals(s);
         // }
         // if (obj instanceof Character c) {
-        //     return String.valueOf(c).equals(this.toString());
+        // return String.valueOf(c).equals(this.toString());
         // }
         return false;
     }
@@ -59,5 +62,9 @@ public final class Delimeter {
     @Override
     public String toString() {
         return String.valueOf(this.c);
+    }
+
+    boolean isEmpty() {
+        return this.c == null;
     }
 }

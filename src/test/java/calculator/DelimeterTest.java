@@ -2,9 +2,16 @@ package calculator;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.Test;
 
 public class DelimeterTest {
+    @Test
+    void testRejectNonPrintableChars() {
+        var c = (char) 0;
+        assertThrows(IllegalArgumentException.class, () -> new Delimeter(c));
+    }
+
     @Test
     void testToRegexFormat_1() {
         var delim1 = new Delimeter(',');
