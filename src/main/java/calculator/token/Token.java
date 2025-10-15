@@ -1,6 +1,6 @@
 package calculator.token;
 
-public abstract class Token<T extends Number> {
+abstract class Token<T extends Number> {
 
     abstract Token<T> reduce(Token<T> token);
 
