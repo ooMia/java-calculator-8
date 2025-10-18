@@ -18,29 +18,18 @@
 
 ### [Trial/first](https://github.com/ooMia/java-calculator-8/pull/1)
 
-#### 동일한 유형의 테스트들을 깔끔하게 관리하는 방법
-
-> 조사는 했지만, 리팩토링 전에는 나열하듯 작성하고 순서만 신경써도 충분하다.
-
-- `@BeforeEach`로 given 코드 중복 제거
-
-  ```java
-  private Lexer lexer;
-
-  @BeforeEach
-  void setUp() {
-     lexer = new Lexer();
-  }
-  ```
-
-- `@Nested` 클래스로 논리적 그룹화
-- `@ParameterizedTest`, `@xxxSource`로 중복 제거
-  ```java
-  @ParameterizedTest
-  @ValueSource(strings = {"a", "bb", "ccc"})
-  ```
+- 테스트 정리
+  - `@BeforeEach`, `@Nested`
+  - `@ParameterizedTest`, `@xxxSource`
 
 ### [Trial/second (실패)](https://github.com/ooMia/java-calculator-8/pull/2)
 
-- 요구사항에서 필요한 정보를 추출하고, 문제를 작게 분리할 수 있어야 한다.
-- 적절한 시작점을 잡고, 테스트를 기반으로 천천히 키워나가는 능력을 키워야 한다.
+- 요구사항에서 프로그램 제약을 추출하고, 이를 활용하여 문제를 작게 분리한다.
+- 적절한 시작점을 잡고, 테스트를 기반으로 규모 키워나가기
+
+### [Trial/third](https://github.com/ooMia/java-calculator-8/pull/3)
+
+- 요구사항을 정리하면서 개발 방향성과 프로그램 제약 모두 깔끔하게 정리되어야 한다.
+- `InternalProblem`는 
+  - 프로그램의 제약을 이해하고, 복잡한
+- 요구사항에 정리했으나, 구현에 집중하
