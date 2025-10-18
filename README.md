@@ -30,6 +30,6 @@
 ### [Trial/third](https://github.com/ooMia/java-calculator-8/pull/3)
 
 - 요구사항을 정리하면서 개발 방향성과 프로그램 제약 모두 깔끔하게 정리되어야 한다.
-- `InternalProblem`는 
-  - 프로그램의 제약을 이해하고, 복잡한
-- 요구사항에 정리했으나, 구현에 집중하
+- `enum`형 클래스가 `Cause` 인터페이스를 구현하면, `ProblemHandler` 인터페이스를 통해 오류를 쉽게 생성할 수 있다.
+    - `Cause` 예외의 메시지 담당
+    - `ProblemHandler` 예외의 클래스와 접두사 담당 
