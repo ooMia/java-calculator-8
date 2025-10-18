@@ -18,8 +18,8 @@ public final class DelimiterToken implements CharToken {
     @Override
     public Token reduce(char input) {
         if (delimiters.contains(input)) {
-            sb.setLength(0);
             var num = Integer.parseInt(sb.toString());
+            sb.setLength(0);
             return new PositiveNumberToken(num);
         }
         sb.append(input);
@@ -32,6 +32,9 @@ public final class DelimiterToken implements CharToken {
             args.addAll(this.delimiters);
             args.addAll(delimiterToken.delimiters);
             return new DelimiterToken(args);
+        }
+        if (input instanceof EmptyToken) {
+            return reduce(this.delimiters.iterator().next());
         }
         return evaluate();
     }
@@ -53,8 +56,8 @@ public final class DelimiterToken implements CharToken {
 
     private boolean isReadyToCustomize() {
         var status = sb.toString();
-        if (status.startsWith("//") && status.endsWith("\\n")) {
-            if (status.length() != 5) {
+        if (status.startsWith("//") && status.length() == 5) {
+            if (!status.endsWith("\\n")) {
                 throw new IllegalArgumentException();
             }
             return true;
