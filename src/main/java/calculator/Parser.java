@@ -4,7 +4,7 @@ import java.util.Set;
 import java.util.stream.Stream;
 
 public final class Parser {
-    
+
     private final String regex;
 
     public Parser(Set<Integer> baseDelimiters) {
@@ -17,13 +17,14 @@ public final class Parser {
 
     /**
      * split joined integers by delimiters into array
+     * 
      * @param line integers concatenated by base delimiters
      * @return array of integers
      */
     public int[] parse(String line) {
         try {
             String[] tokens = line.split(this.regex);
-            return Stream.of(tokens).mapToInt(Integer::parseInt).toArray();
+            return Stream.of(tokens).filter(s -> !s.isEmpty()).mapToInt(Integer::parseInt).toArray();
         } catch (NumberFormatException e) {
             throw Cause.INVALID_INPUT.exception();
         }
