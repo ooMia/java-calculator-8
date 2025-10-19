@@ -28,8 +28,15 @@ public final class Lexer {
             if (pattern == null) {
                 break;
             }
+
             int customDelimiterCode = extractDelimiter(pattern);
             var customDelimiter = Character.toString(customDelimiterCode);
+
+            // custom delimiter should come after the definition phase - "11;22//;\\n33"
+            int iStart = line.indexOf(this.prefix);
+            if (line.substring(0, iStart).contains(customDelimiter)) {
+                throw Cause.INVALID_INPUT.exception();
+            }
 
             // 1. remove `suffix + delimiter + prefix` pattern
             // 2. replace `delimiter` to base delimeter
@@ -52,17 +59,17 @@ public final class Lexer {
     int extractDelimiter(String pattern) {
         int iStart = this.prefix.length();
         int iEnd = pattern.length() - this.suffix.length();
-
-        var candidates = pattern.substring(iStart, iEnd).codePoints().toArray();
-        if (candidates.length != 1) {
+        try {
+            pattern = pattern.substring(iStart, iEnd);
+        } catch (IndexOutOfBoundsException e) {
             throw Cause.INVALID_INPUT.exception();
         }
 
-        var delimiter = candidates[0];
-        if (this.baseDelimiters.contains(delimiter)) {
+        var candidates = pattern.codePoints().toArray();
+        if (candidates.length != 1 || this.baseDelimiters.contains(candidates[0])) {
             throw Cause.INVALID_INPUT.exception();
         }
-        return delimiter;
+        return candidates[0];
     }
 
     private String getBaseDelimiter() {

@@ -13,7 +13,8 @@ public final class Evaluator {
     }
 
     /**
-     * apply cumulative operation for given numbers 
+     * apply cumulative operation for given numbers
+     * 
      * @param operands values to use as an argument of cumulative operation
      * @return final value after iteration
      */
@@ -24,5 +25,5 @@ public final class Evaluator {
         }
         return res;
     }
-    
+
 }
