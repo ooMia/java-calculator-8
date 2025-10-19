@@ -21,14 +21,14 @@ class LexerTest {
     void testFindPattern_1() {
         var expect = "//;\\n";
         var actual = lexer.findPattern("//;\\n1");
-        assertEquals(expect, actual, "ASCII 형태의 커스텀 구분자 패턴 식별");
+        assertEquals(expect, actual.get(), "ASCII 형태의 커스텀 구분자 패턴 식별");
     }
 
     @Test
     void testFindPattern_2() {
         var expect = "//가\\n";
         var actual = lexer.findPattern("//가\\n1");
-        assertEquals(expect, actual, "유니코드 형태의 커스텀 구분자 패턴 식별");
+        assertEquals(expect, actual.get(), "유니코드 형태의 커스텀 구분자 패턴 식별");
     }
 
     @Test
