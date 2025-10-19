@@ -1,7 +1,7 @@
 package calculator.token;
 
 public record IntegerToken(Integer value) implements NumberToken {
-    
+
     @Override
     public Token reduce(Token operand) {
         if (operand instanceof OperationToken operator) {
@@ -9,6 +9,11 @@ public record IntegerToken(Integer value) implements NumberToken {
         }
 
         throw Cause.FALLBACK.exception();
+    }
+
+    @Override
+    public Integer identity() {
+        return this.value;
     }
 
 }

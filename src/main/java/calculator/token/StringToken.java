@@ -23,25 +23,28 @@ public final class StringToken implements Token {
         return this;
     }
 
+
     @Override
-    public String toString() {
+    public String identity() {
         return sb.toString();
     }
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof StringToken st) {
-            return toString().equals(st.toString());
-        }
-        if (obj instanceof CharToken ch) {
-            return toString().equals(ch.toString());
+        if (obj instanceof Token token) {
+            return this.identity().equals(token.identity());
         }
         return super.equals(obj);
     }
 
     @Override
     public int hashCode() {
-        return toString().hashCode();
+        return identity().hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return identity();
     }
 
 }

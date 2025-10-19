@@ -20,4 +20,9 @@ public record CharToken(int codePoint) implements Token {
         return Character.toString(codePoint());
     }
 
+    @Override
+    public String identity() {
+        return String.valueOf(this.codePoint);
+    }
+
 }

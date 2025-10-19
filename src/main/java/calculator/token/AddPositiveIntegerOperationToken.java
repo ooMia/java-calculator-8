@@ -32,4 +32,9 @@ public final class AddPositiveIntegerOperationToken extends AbstractOperationTok
         }
     }
 
+    @Override
+    public Integer identity() {
+        return this.getResult();
+    }
+
 }
