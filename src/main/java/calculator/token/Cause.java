@@ -1,4 +1,4 @@
-package calculator;
+package calculator.token;
 
 import calculator.util.problem.DefaultProblemHandler;
 import calculator.util.problem.InputCause;
@@ -21,4 +21,5 @@ enum Cause implements InputCause {
     public IllegalArgumentException exception() {
         return handler.exception(this.message);
     }
+    
 }
