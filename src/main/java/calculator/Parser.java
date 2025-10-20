@@ -12,7 +12,7 @@ public final class Parser {
         for (var code : baseDelimiters) {
             sb.append('\\').append(Character.toString(code));
         }
-        this.regex = String.format("[%s]", sb.toString());
+        this.regex = String.format("[%s]", sb);
     }
 
     /**
