@@ -1,6 +1,6 @@
-package calculator;
+package calculator.core;
 
-enum Cause {
+enum InternalCauseMessage {
 
     NUMBER_SUM_OVERFLOW(),
     FAILED_PARSE_LONG(),
@@ -12,11 +12,11 @@ enum Cause {
 
     private final String message;
 
-    Cause() {
+    InternalCauseMessage() {
         this.message = this.name();
     }
 
-    Cause(String message) {
+    InternalCauseMessage(String message) {
         this.message = message;
     }
 

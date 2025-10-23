@@ -1,14 +1,14 @@
-package calculator;
+package calculator.core;
 
 import java.util.Set;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
-final class Parser {
+final class LongParser {
 
     private final Pattern pattern;
 
-    public Parser(Set<Integer> baseDelimiters) {
+    public LongParser(Set<Integer> baseDelimiters) {
         var sb = new StringBuilder();
         for (var code : baseDelimiters) {
             sb.append('\\').append(Character.toString(code));
@@ -31,7 +31,7 @@ final class Parser {
                     .mapToLong(Long::parseLong)
                     .toArray();
         } catch (NumberFormatException e) {
-            throw Cause.FAILED_PARSE_LONG.exception();
+            throw InternalCauseMessage.FAILED_PARSE_LONG.exception();
         }
     }
 

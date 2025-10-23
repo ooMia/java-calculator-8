@@ -1,4 +1,4 @@
-package calculator;
+package calculator.core;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,11 +12,11 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class LexerTest {
 
-    private Lexer lexer;
+    private CustomDelimiterLexer lexer;
 
     @BeforeEach
     void setUp() {
-        this.lexer = new Lexer(Set.of((int) ',', (int) ':'), "//", "\\n");
+        this.lexer = new CustomDelimiterLexer(Set.of((int) ',', (int) ':'), "//", "\\n");
     }
 
     @Test
@@ -56,7 +56,7 @@ class LexerTest {
     @ParameterizedTest
     @ValueSource(strings = {"//;\\n11;22;33", "//\\\\n11\\22\\33", "//n\\n11n22n33", "///\\n11/22/33"})
     void testReplaceDelimiterSuccess(String input) {
-        var soloDelimiterLexer = new Lexer(Set.of((int) ','), "//", "\\n");
+        var soloDelimiterLexer = new CustomDelimiterLexer(Set.of((int) ','), "//", "\\n");
         var expect = "11,22,33";
         assertEquals(expect, soloDelimiterLexer.replaceDelimiter(input));
     }

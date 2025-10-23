@@ -1,4 +1,4 @@
-package calculator;
+package calculator.core;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -9,11 +9,11 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class CalculatorTest {
 
-    private Calculator calculator;
+    private PositiveLongCalculator calculator;
 
     @BeforeEach
     void setUp() {
-        this.calculator = new Calculator();
+        this.calculator = new PositiveLongCalculator();
     }
 
     @ParameterizedTest

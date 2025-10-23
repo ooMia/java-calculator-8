@@ -1,19 +1,19 @@
-package calculator;
+package calculator.core;
 
 import java.util.Collections;
 import java.util.Optional;
 import java.util.Set;
 
-final class Lexer {
+final class CustomDelimiterLexer {
 
     private final Set<Integer> baseDelimiters;
     private final String prefix;
     private final String suffix;
 
-    public Lexer(Set<Integer> baseDelimiters, String prefix, String suffix) {
+    public CustomDelimiterLexer(Set<Integer> baseDelimiters, String prefix, String suffix) {
         this.baseDelimiters = Collections.unmodifiableSet(baseDelimiters);
         if (baseDelimiters.isEmpty()) {
-            throw Cause.BASE_DELIMITER_MORE_THAN_ONE.exception();
+            throw InternalCauseMessage.BASE_DELIMITER_MORE_THAN_ONE.exception();
         }
         this.prefix = prefix;
         this.suffix = suffix;
@@ -66,14 +66,14 @@ final class Lexer {
             var stringBetweenRule = definitionPhase.substring(indexPrefixEnd, indexSuffixStart);
             return getSingleCharacterOrThrow(stringBetweenRule);
         } catch (IndexOutOfBoundsException e) {
-            throw Cause.NO_MATCHED_RULE_FOUND.exception();
+            throw InternalCauseMessage.NO_MATCHED_RULE_FOUND.exception();
         }
     }
 
     private int getSingleCharacterOrThrow(String stringBetweenRule) throws IllegalArgumentException {
         var candidates = stringBetweenRule.codePoints().toArray();
         if (candidates.length != 1 || this.baseDelimiters.contains(candidates[0])) {
-            throw Cause.CUSTOM_DELIMITER_SINGLE_CHARACTER_ASSERTION.exception();
+            throw InternalCauseMessage.CUSTOM_DELIMITER_SINGLE_CHARACTER_ASSERTION.exception();
         }
         return candidates[0];
     }
@@ -82,7 +82,7 @@ final class Lexer {
         int indexPrefixStart = line.indexOf(this.prefix);
         var stringBeforePrefixStart = line.substring(0, indexPrefixStart);
         if (stringBeforePrefixStart.contains(delimiter)) {
-            throw Cause.CUSTOM_DELIMITER_RULE_BROKEN.exception();
+            throw InternalCauseMessage.CUSTOM_DELIMITER_RULE_BROKEN.exception();
         }
     }
 

@@ -1,4 +1,4 @@
-package calculator;
+package calculator.core;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -10,11 +10,11 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class ParserTest {
 
-    private Parser parser;
+    private LongParser parser;
 
     @BeforeEach
     void setUp() {
-        this.parser = new Parser(Set.of((int) ',', (int) ':'));
+        this.parser = new LongParser(Set.of((int) ',', (int) ':'));
     }
 
     @Test
@@ -27,7 +27,7 @@ class ParserTest {
 
     @Test
     void testParseSuccessOnUnicode() {
-        var parser = new Parser(Set.of((int) '가', Character.codePointAt("😀", 0)));
+        var parser = new LongParser(Set.of((int) '가', Character.codePointAt("😀", 0)));
         var input = "11가22😀33";
         var expected = new long[]{11, 22, 33};
         var actual = parser.parse(input);

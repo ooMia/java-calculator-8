@@ -1,4 +1,4 @@
-package calculator;
+package calculator.core;
 
 import java.util.Arrays;
 import java.util.Set;
@@ -12,12 +12,12 @@ import java.util.stream.Stream;
  */
 abstract class AbstractLongCalculator implements SumCalculator {
 
-    private final Lexer lexer;
-    private final Parser parser;
+    private final CustomDelimiterLexer lexer;
+    private final LongParser parser;
 
     AbstractLongCalculator(Set<Integer> baseDelimiters, CustomDelimiterRule rule) {
-        this.lexer = new Lexer(baseDelimiters, rule.prefix(), rule.suffix());
-        this.parser = new Parser(baseDelimiters);
+        this.lexer = new CustomDelimiterLexer(baseDelimiters, rule.prefix(), rule.suffix());
+        this.parser = new LongParser(baseDelimiters);
     }
 
     private Stream<Number> parseNumbers(String line) {
