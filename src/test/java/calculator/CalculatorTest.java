@@ -1,11 +1,11 @@
 package calculator;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class CalculatorTest {
 
@@ -13,34 +13,32 @@ class CalculatorTest {
 
     @BeforeEach
     void setUp() {
-        var baseDelimiters = List.of((int) ',', (int) ':');
-        var customDelimiterRule = new CustomDelimiterRule("//", "\\n");
-        this.calculator = new Calculator(baseDelimiters, customDelimiterRule);
+        this.calculator = new Calculator();
     }
 
     @ParameterizedTest
     @ValueSource(strings = {"", "//;\\n"})
     void testSumResultZero(String input) {
-        assertEquals(0, calculator.sum(input), "0이 나오는 경우");
+        assertEquals(0L, calculator.sum(input), "0이 나오는 경우");
     }
 
     @ParameterizedTest
     @ValueSource(strings = {"//;\\n33", "11,22"})
     void testSumResultThirtyThree(String input) {
-        assertEquals(33, calculator.sum(input), "33이 나오는 경우");
+        assertEquals(33L, calculator.sum(input), "33이 나오는 경우");
     }
 
     @ParameterizedTest
     @ValueSource(strings = {"11,22,33", "11,22:33", "//;\\n11;22;33"})
     void testSumResultSixtySix(String input) {
-        assertEquals(66, calculator.sum(input), "66이 나오는 경우");
+        assertEquals(66L, calculator.sum(input), "66이 나오는 경우");
     }
 
     @ParameterizedTest
     @ValueSource(chars = {'-', '+', '.', '*', '/', '\\', 'n', '\n'})
     void testSumResultSuccessForVarietyCustomDelims(char delimiter) {
         var input = String.format("//%c\\n11%c22%c33", delimiter, delimiter, delimiter);
-        assertEquals(66, calculator.sum(input), "66이 나오는 경우");
+        assertEquals(66L, calculator.sum(input), "66이 나오는 경우");
     }
 
     @ParameterizedTest
@@ -70,13 +68,19 @@ class CalculatorTest {
     @ParameterizedTest
     @ValueSource(strings = {"//→\\n11→22→33", "//아\\n11아22아33"})
     void testSumResultSuccessSupportingCustomUnicodeDelimiter(String input) {
-        assertEquals(66, calculator.sum(input), "유니코드 한 문자 커스텀 구분자 지원");
+        assertEquals(66L, calculator.sum(input), "유니코드 한 문자 커스텀 구분자 지원");
     }
 
     @ParameterizedTest
     @ValueSource(strings = {"//;\\n11:22;33", "//;\\n//n\\n11n22;33",})
     void testSumResultSuccessUsingCustomWithBase(String input) {
         // "11//;\\n22;33" 와 같은 케이스는 입력의 `앞부분`은 아니므로 제외
-        assertEquals(66, calculator.sum(input), "구분자가 중복되어 함께 사용되는 경우");
+        assertEquals(66L, calculator.sum(input), "구분자가 중복되어 함께 사용되는 경우");
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"//;\\9223372036854775807;1", "//;\\9223372036854775807;9223372036854775807;3", "//;\\9223372036854775807;1",})
+    void testSumResultABC(String input) {
+        assertThrows(IllegalArgumentException.class, () -> calculator.sum(input), "Integer 형을 넘어가는 연산은 실패해야 한다.");
     }
 }

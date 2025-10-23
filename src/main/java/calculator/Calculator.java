@@ -1,49 +1,28 @@
 package calculator;
 
-import java.util.Collection;
 import java.util.Set;
-import java.util.function.IntBinaryOperator;
+import java.util.function.BinaryOperator;
 
-public final class Calculator {
+public final class Calculator extends AbstractLongCalculator {
 
-    // 1. Lexer
-    // - 기본 구분자를 모두 전달
-    // - 커스텀 구분자 패턴을 기본 구분자로 치환
+    private static final Set<Integer> DEFAULT_BASE_DELIMITERS = Set.of((int) ',', (int) ':');
+    private static final CustomDelimiterRule DEFAULT_CUSTOM_DELIMITER_RULE = new CustomDelimiterRule("//", "\\n");
 
-    // 2. Parser
-    // - 기본 구분자를 모두 전달
-    // - 문자열을 숫자 배열로 변환
-
-    // 3. Evaluator
-    // - 주어진 연산 방식에 따라 배열을 평가
-    // - 하나의 결과로 합침
-
-    private final Set<Integer> baseDelimiters;
-
-    private final Lexer lexer;
-    private final Parser parser;
-    private final Evaluator evaluator;
-
-    public Calculator(Collection<Integer> delimiters, CustomDelimiterRule rule) {
-        this.baseDelimiters = Set.copyOf(delimiters);
-        this.lexer = new Lexer(baseDelimiters, rule.prefix(), rule.suffix());
-        this.parser = new Parser(baseDelimiters);
-        this.evaluator = new Evaluator(sumPositiveOnlyOperation(), 0);
+    public Calculator() {
+        super(DEFAULT_BASE_DELIMITERS, DEFAULT_CUSTOM_DELIMITER_RULE);
     }
 
-    private static IntBinaryOperator sumPositiveOnlyOperation() {
-        return (int res, int newValue) -> {
-            if (newValue <= 0) {
+    @Override
+    protected BinaryOperator<Number> sumReducer() {
+        return (Number res, Number newValue) -> {
+            if (newValue.longValue() <= 0) {
                 throw Cause.INVALID_INPUT.exception();
             }
-            return res + newValue;
+            try {
+                return Math.addExact(res.longValue(), newValue.longValue());
+            } catch (ArithmeticException e) {
+                throw Cause.NUMBER_SUM_OVERFLOW.exception();
+            }
         };
     }
-
-    public int sum(String line) {
-        line = lexer.replace(line);
-        var numbers = parser.parse(line);
-        return evaluator.evaluate(numbers);
-    }
-
 }

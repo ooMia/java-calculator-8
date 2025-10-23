@@ -1,80 +1,89 @@
 package calculator;
 
+import java.util.Collections;
 import java.util.Optional;
 import java.util.Set;
 
-public final class Lexer {
+final class Lexer {
 
     private final Set<Integer> baseDelimiters;
     private final String prefix;
     private final String suffix;
 
     public Lexer(Set<Integer> baseDelimiters, String prefix, String suffix) {
-        this.baseDelimiters = Set.copyOf(baseDelimiters);
+        this.baseDelimiters = Collections.unmodifiableSet(baseDelimiters);
+        if (baseDelimiters.isEmpty()) {
+            throw Cause.BASE_DELIMITER_MORE_THAN_ONE.exception();
+        }
         this.prefix = prefix;
         this.suffix = suffix;
     }
 
     /**
-     * find pattern and replace with base delimiter
-     * 
+     * find and remove multiple custom delimiter definition pattern and replace with base delimiter
+     *
      * @param line expression with custom delimiters
      * @return numbers concatenated by base delimiters
      */
-    public String replace(String line) {
-        var baseDelimiter = this.getBaseDelimiter();
+    public String replaceDelimiter(String line) {
+        String baseDelimiter = this.getFirstBaseDelimiter();
         while (true) {
-            var pattern = findPattern(line).orElse(null);
-            if (pattern == null) {
+            var patternFound = findCustomDelimiterDefinitionPhase(line);
+            if (patternFound.isEmpty()) {
                 break;
             }
 
-            int customDelimiterCode = extractDelimiter(pattern);
-            var customDelimiter = Character.toString(customDelimiterCode);
+            String definitionPhase = patternFound.get();
+            int code = findCustomDelimiterCode(definitionPhase);
+            String customDelimiter = Character.toString(code);
+            assertCustomDelimiterDefineFirstBeforeUsing(line, customDelimiter);
 
-            // custom delimiter should come after the definition phase - "11;22//;\\n33"
-            int iStart = line.indexOf(this.prefix);
-            if (line.substring(0, iStart).contains(customDelimiter)) {
-                throw Cause.INVALID_INPUT.exception();
-            }
-
-            // 1. remove `suffix + delimiter + prefix` pattern
-            // 2. replace `delimiter` to base delimeter
-            line = line.replace(pattern, "");
+            line = line.replace(definitionPhase, "");
             line = line.replace(customDelimiter, baseDelimiter);
         }
         return line;
     }
 
-    Optional<String> findPattern(String line) {
+    private String getFirstBaseDelimiter() {
+        var codePoint = baseDelimiters.iterator().next();
+        return Character.toString(codePoint);
+    }
+
+    Optional<String> findCustomDelimiterDefinitionPhase(String line) {
         try {
-            int iStart = line.indexOf(this.prefix);
-            int iEnd = line.indexOf(this.suffix) + this.suffix.length();
-            return Optional.of(line.substring(iStart, iEnd));
+            int indexFrom = line.indexOf(this.prefix);
+            int indexTo = line.indexOf(this.suffix) + this.suffix.length();
+            return Optional.of(line.substring(indexFrom, indexTo));
         } catch (IndexOutOfBoundsException e) {
             return Optional.empty();
         }
     }
 
-    int extractDelimiter(String pattern) {
-        int iStart = this.prefix.length();
-        int iEnd = pattern.length() - this.suffix.length();
+    int findCustomDelimiterCode(String definitionPhase) {
+        int indexPrefixEnd = this.prefix.length();
+        int indexSuffixStart = definitionPhase.length() - this.suffix.length();
         try {
-            pattern = pattern.substring(iStart, iEnd);
+            var stringBetweenRule = definitionPhase.substring(indexPrefixEnd, indexSuffixStart);
+            return getSingleCharacterOrThrow(stringBetweenRule);
         } catch (IndexOutOfBoundsException e) {
-            throw Cause.INVALID_INPUT.exception();
+            throw Cause.NO_MATCHED_RULE_FOUND.exception();
         }
+    }
 
-        var candidates = pattern.codePoints().toArray();
+    private int getSingleCharacterOrThrow(String stringBetweenRule) throws IllegalArgumentException {
+        var candidates = stringBetweenRule.codePoints().toArray();
         if (candidates.length != 1 || this.baseDelimiters.contains(candidates[0])) {
-            throw Cause.INVALID_INPUT.exception();
+            throw Cause.CUSTOM_DELIMITER_SINGLE_CHARACTER_ASSERTION.exception();
         }
         return candidates[0];
     }
 
-    private String getBaseDelimiter() {
-        var codePoint = baseDelimiters.iterator().next();
-        return Character.toString(codePoint);
+    private void assertCustomDelimiterDefineFirstBeforeUsing(String line, String delimiter) {
+        int indexPrefixStart = line.indexOf(this.prefix);
+        var stringBeforePrefixStart = line.substring(0, indexPrefixStart);
+        if (stringBeforePrefixStart.contains(delimiter)) {
+            throw Cause.CUSTOM_DELIMITER_RULE_BROKEN.exception();
+        }
     }
 
 }
